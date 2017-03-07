@@ -6,8 +6,33 @@ const _ = require('lodash');
 const yargs = require('yargs');
 
 
-const argv = yargs.argv;
-var command = process.argv[2];
+const titleOptions = {
+	describe: 'Title of note',
+	demand: true,
+	alias: 't'
+};
+const bodyOptions = {
+	describe: 'Body of note',
+	demand: true,
+	alias: 'b'
+};
+
+const argv = yargs
+.command('add','Add a new note',{
+	describe:'Body of note',
+	demand:true,
+	alias:'t'
+})
+.command('list','List all notes')
+.command('read','Read a note',{
+	title: titleOptions
+})
+.command('remove','Remove a note',{
+	title: titleOptions
+})
+.help()
+.argv;
+var command = argv._[0];
 
 console.log('command:',command);
 console.log('yargs:',argv);
@@ -16,21 +41,19 @@ console.log('yargs:',argv);
 		var note = notes.addNote(argv.title,argv.body);
 		if(note){
 			console.log('Note Created');
-			console.log('-----')
-			console.log(`Title: ${note.title}`);
-    		console.log(`Body: ${note.body}`);
+			notes.logNote(note)
 		}else{
 			console.log('Note title Taken');
 		}
 	}else if (command === 'list'){
-		notes.getAll();
+		var allNotes = notes.getAll();
+  		console.log(`Printing ${allNotes.length} note(s).`);
+  		allNotes.forEach((note) => notes.logNote(note));
 	}else if (command === 'read'){
 		var note = notes.getNote(argv.title);
   		if (note) {
     		console.log('Note found');
-    		console.log('-----')
-			console.log(`Title: ${note.title}`);
-    		console.log(`Body: ${note.body}`);
+			notes.logNote(note)
   		} else {
     		console.log('Note not found');
   		}
