@@ -6,11 +6,11 @@
 
 ```
 const MongoClient = require('mongodb').MongoClient; 
-MongoCient.connect({url},{callbackfunction})
+MongoCient.connect({url},{callbackFunction})
 
 ```
-- url : mongodb database所在網址，若為本地端的話通常為mongodb://localhost:27017
-- callbackfunction : 通常含有兩個參數 : err & client(db)
+- url : mongodb database所在網址，若為本地端的話通常為 mongodb://localhost:27017
+- callbackFunction : 通常含有兩個參數 : err & client(db)
 	-  err : 連線錯誤時的錯誤訊息
 	-  client(db) : 連線正確時，回傳的正確連線物件 
  
