@@ -54,9 +54,76 @@ db.collection({collectionName}).count({filterFormula}).toArray().then((docs) => 
 - filterFormula  : 篩選用的條件式，若留空則會回傳所有物件 ex: name : "Andrew"
 - 將會回傳符合條件的物件的「數量」
 
+### Delete
+
+#### deleteMany
+```
+db.collection('Todos').deleteMany({filterFormula}).then( (result) => {
+    console.log(result);
+})
+```
+- filterFormula  : 篩選用的條件式，若留空則會回傳所有物件 ex: name : "Andrew"
+- result : 刪除資料的細節，其中含 n & ok 兩參數，n表刪除了幾個物件，ok表是否成功，1->成功
+- deleteMany : 刪除所有符合條件的物件
+
+#### deleteOne
+```
+db.collection('Todos').deleteOne({filterFormula}).then( (result) => {
+    console.log(result);
+})
+```
+- filterFormula  : 篩選用的條件式，若留空則會回傳所有物件 ex: name : "Andrew"
+- result : 刪除資料的細節，其中含 n & ok 兩參數，n表刪除了幾個物件，ok表是否成功，1->成功
+- deleteOne : 刪除符合條件的第一個物件
+
+#### findOneAndDelete
+```
+db.collection('Todos').findOneAndDelete({filterFormula}).then( (result) => {
+    console.log(result);
+})
+```
+- filterFormula  : 篩選用的條件式，若留空則會回傳所有物件 ex: name : "Andrew"
+- result : 刪除資料的細節，其中含 n & ok 兩參數，n表刪除了幾個物件，ok表是否成功，1->成功，且含有被刪除的該物件
+- findOneAndDelete : 刪除符合條件的第一個物件，並且回傳該物件至result
 
 
-#### objectID => [詳細分析](http://www.cnblogs.com/xjk15082/archive/2011/09/18/2180792.html)
+### Update
+
+#### findOneAndUpdate
+
+```
+db.collection('Todos').findOneAndUpdate({filterFormula}, {
+    $set : {
+        {anyProperty} : {updateValue}
+    },
+    $inc : {
+        {numnerProperty} : {number}
+    }
+}, {
+    returnOriginal : {true||false} 
+}).then((result) => {
+    console.log(result)
+})
+```
+- filterFormula  : 篩選用的條件式，若留空則會回傳所有物件 ex: name : "Andrew"
+- $set : 要更新的物件列表
+	- anyProperty : 要更新得物件的key
+	- updateValue : 要更新得值（value）
+- $inc : 要做加法運算更新的物件
+	-  numnerProperty : 要更新得物件的key(value需為數字)
+	-  number : 要增加多少數字
+- returnOriginal : 只有true & false兩種，若為true則回傳物件尚未被更新的所有值，若為false則回傳已更新的
+
+
+#### objectID 
+```
+const {ObjectID} = require('mongodb')
+var obj = new ObjectID({objectidName});
+```
+- objectID組成：[連結](http://www.cnblogs.com/xjk15082/archive/2011/09/18/2180792.html)
+- ObjectID : 為mongodb內建的ObjectID模組
+- obj : 為一個objectID物件
+- objectidName : 可為任一objectid名字（用在查詢）
 
 ### ES6 Feature
 
