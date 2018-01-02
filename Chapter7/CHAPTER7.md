@@ -23,7 +23,7 @@ const db = client.db({documentName})
 db.collection({collectionName}).insertOne({objectDetail})
 ```
 - documentName : 選定資料表的名稱
-- collectionName : 選定產生物件(Table)的名稱
+- collectionName : 為選定產生collection(Table)的名稱
 - objectDetail : 要插入物件的詳細資料（可以有多組 key : value）
 
 #### Find
@@ -137,4 +137,85 @@ const = {{objectKeyName}} = require({moduleNmae})
 - objectKeyName : 為模組裡的物件名稱
 - moduleName: 物件名稱
 - destructuring : 可簡化程式碼，它會創造一個與objectKeyName的變數，並把value取出來
+
+### Mongoose
+
+
+#### Promise 
+
+```
+var mongoose = require('mongoose')
+mongoose.Promise = global.Promise;
+```
+- mongoose.Promise : 設置mongoose是否要使用外掛的Promise Plugin
+- global.Promise : 使用javascrip native的Promise
+
+#### Connect
+
+```
+var mongoose = require('mongoose')
+mongoose.connect({url})
+```
+- url : mongodb database所在網址，若為本地端的話通常為 mongodb://localhost:27017
+
+#### Model
+
+##### create model
+
+```
+var {variableName} = mongoose.model('collectionName',{objectFormula})
+```
+- variableName : 變數名稱（可隨便取）
+- collectionName : 為選定產生collection(Table)的名稱
+- objectFormula : 預備創造的object規則，ex : text : String （text需要為字串格式）
+
+##### create object
+
+```
+var {variableName} = new {modelName}({objectDetail})
+```
+- variableName : 變數名稱（可隨便取）
+- modelName : 為選定產生模型(model)的名稱
+- objectDetail : 預創造物件的細節資料
+
+#### save object 
+
+```
+{objectName}.save().then((docs)=>{
+	console.log(JSON.stringify(docs , undefined , 2))
+}, (e) => {
+	console.log('Unable to save todo')
+})
+```
+- objectName : 已產生的object（預備把它存進db）
+- save() : 把object存進db
+
+
+#### modelValidation
+
+```
+// Example 
+
+var Todo = mongoose.model('Todos',{
+    text : {
+        type : String,
+        required: true, 
+        minlength : 1,
+        trim : true // ignore space in the end or beginning
+    },
+    completed : {
+        type : Boolean,
+        default : false
+    },
+    completedAt : {
+        type : Number,
+        default : null
+    }
+})
+```
+- required : 只有true/false，如其名若為true則為必填
+- minlength : 最小的字元數，若小於此數，則會錯誤
+- trim : 只有true/false，若為true則會自動把頭尾的空格給去掉
+
+
 
