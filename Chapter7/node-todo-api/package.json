@@ -6,7 +6,8 @@
   "scripts": {
     "test": " mocha server/**/*.test.js ",
     "test-watch": " nodemon --exec 'npm test' ",
-    "start": " nodemon --exec 'node ./server/server.js' "
+    "start": " node ./server/server.js ",
+    "start-watch": "nodemon --exec 'npm start'"
   },
   "author": "",
   "license": "ISC",

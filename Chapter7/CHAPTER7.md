@@ -149,6 +149,7 @@ mongoose.Promise = global.Promise;
 ```
 - mongoose.Promise : 設置mongoose是否要使用外掛的Promise Plugin
 - global.Promise : 使用javascrip native的Promise
+- [參考資料](http://erikaybar.name/using-es6-promises-with-mongoosejs-queries/)
 
 #### Connect
 
@@ -216,6 +217,38 @@ var Todo = mongoose.model('Todos',{
 - required : 只有true/false，如其名若為true則為必填
 - minlength : 最小的字元數，若小於此數，則會錯誤
 - trim : 只有true/false，若為true則會自動把頭尾的空格給去掉
+
+
+
+### other
+
+#### express - use(module)
+
+```
+var {expressObjectName} = express();
+{expressObjectName}.use({applicationModule});
+```
+- expressObjectName : express物件的名稱，可自己取名字
+- applicationModulel : 想要掛載的應用程式模組（ex: body-parser）
+- use方法有多種方式，此方法為應用程式的掛載，無指定url，表示每一個request進來都會執行（[詳解](http://expressjs.com/zh-tw/guide/using-middleware.html#middleware.built-in)）
+
+#### expect
+
+```
+{supertestModule}({expressModule})
+		.{Method}({url})
+		.expect({statueCode})
+// ex :
+
+request(app)
+	.post('/todso')
+	.send({text})	
+	.expect(200)	
+
+```
+
+- expect接在supertest後，不指名任何東西，則為檢查status code
+
 
 
 

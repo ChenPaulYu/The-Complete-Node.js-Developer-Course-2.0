@@ -9,6 +9,7 @@ var {ObjectID} = require('mongodb')
 
 
 var app = express();
+const port = process.env.PORT || 3000
 
 
 app.use(bodyParser.json());
@@ -53,39 +54,35 @@ app.get('/todos/:id' , (req,res) => {
 })
 
 
-app.listen(3000,() => {
-    console.log('Started on port 3000');
+app.delete('/todos/:id',(req,res) => {
+    var id = req.params.id
+    if(!ObjectID.isValid(id)){
+        return res.status(404).send()
+    }
+    Todo.findByIdAndRemove(id).then((todo) => {
+        if(!todo){
+            return res.status(404).send()
+        }
+        res.send({ todo })
+    }).catch((e) => {
+        res.status(400).send()
+    })
 })
 
-// var newTodo = new Todo({
-//     text : 'Cook dinner'
-// })
+app.delete('/todos', (req, res) => {
+    Todo.remove({}).then((todo) => {
+        if (!todo) {
+            return res.status(404).send()
+        }
+        res.send({ todo })
+    }).catch((e) => {
+        res.status(400).send()
+    })
+})
 
-// newTodo.save().then( (docs) => {
-//     console.log('save to do ' , docs)
-// })
+app.listen(port,() => {
+    console.log('Started on port ', port );
+})
 
-// newTodo.save().then( (docs) => {
-//     console.log('save to do ', docs)`
-// },(e) => {
-//     console.log('Unable to save todo')
-// })
-
-
-// var newUser = new User({
-//     email : "bernie40916@gmail.com"
-// })
-
-// var otherTodo = new Todo({
-//     tect : 'watch video',
-//     completed : true,
-//     completedAt : 1900
-// })
-
-// otherTodo.save().then((docs) => {
-//     console.log(JSON.stringify(docs , undefined , 2))
-// }, (e) => {
-//     console.log('Unable to save todo ', e)
-// })
 
 module.exports = { app }
